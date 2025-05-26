@@ -1,6 +1,7 @@
 // db.js
 require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
+// console.log('Mongo URL:', process.env.MONGO_URL);
 
 // MongoDB connection URL with authentication options
 let url = `${process.env.MONGO_URL}`;
@@ -13,7 +14,9 @@ async function connectToDatabase() {
         return dbInstance
     };
 
-    const client = new MongoClient(url);    
+    // const client = new MongoClient(url);
+    const client = new MongoClient(url, { useUnifiedTopology: true });
+    
     await client.connect();
     dbInstance = client.db(dbName);
     return dbInstance;  
