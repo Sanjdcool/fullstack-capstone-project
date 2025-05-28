@@ -24,7 +24,7 @@ router.get('/:id', async (req, res, next) => {
         const db = await connectToDatabase();
         const collection = db.collection("gifts");
         const id = req.params.id;
-        const gift = await collection.findOne({ id: id }); // Added semicolon here
+        const gift = await collection.findOne({ id: id });
         if (!gift) {
             return res.status(404).send("Gift not found");
         }
