@@ -6,6 +6,7 @@ const connectToDatabase = require('../models/db');
 const logger = require('../logger');
 
 // Get all gifts
+// logger.console.error('oops something went wrong', e);
 router.get('/', async (req, res, next) => {
     logger.info('/ called');
     try {
@@ -15,7 +16,9 @@ router.get('/', async (req, res, next) => {
         const gifts = await collection.find({}).toArray();
         res.json(gifts);
     } catch (e) {
-        logger.console.error('oops something went wrong', e);
+        
+        logger.error('oops something went wrong', e);
+
         next(e);
     }
 });
