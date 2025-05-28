@@ -32,6 +32,7 @@ router.post('/register',
             // Hash the password
             const salt = await bcryptjs.genSalt(10);
             const hash = await bcryptjs.hash(req.body.password, salt);
+            const email=req.body.email;
 
             // Save new user details
             const newUser = await collection.insertOne({
@@ -61,5 +62,42 @@ router.post('/register',
             res.status(500).send('Internal server error');
         }
 });
-module.exports = router;
 
+
+router.post('/login', async (req, res) => {
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection("users");
+    const theUser = await collection.findOne({ email: req.body.email });
+
+    if (!theUser) {
+      logger.error('User not found');
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const isPasswordCorrect = await bcryptjs.compare(req.body.password, theUser.password);
+    if (!isPasswordCorrect) {
+      logger.error('Passwords do not match');
+      return res.status(404).json({ error: 'Wrong password' });
+    }
+
+    const payload = {
+      user: {
+        id: theUser._id.toString(),
+      },
+    };
+
+    const authtoken = jwt.sign(payload, JWT_SECRET);
+    const userName = theUser.firstName;
+    const userEmail = theUser.email;
+
+    logger.info('User logged in successfully');
+    return res.status(200).json({ authtoken, userName, userEmail });
+
+  } catch (e) {
+    logger.error(e);
+    return res.status(500).json({ error: 'Internal server error', details: e.message });
+  }
+});
+
+module.exports = router;
