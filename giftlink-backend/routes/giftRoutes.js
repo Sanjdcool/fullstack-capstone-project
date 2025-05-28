@@ -1,3 +1,5 @@
+/* jshint esversion: 8 */
+
 const express = require('express');
 const router = express.Router();
 const connectToDatabase = require('../models/db');
@@ -125,6 +127,5 @@ module.exports = router;
 //         next(e);
 //     }
 // });
-
 // module.exports = router;
 
