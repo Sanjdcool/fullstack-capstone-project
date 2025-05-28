@@ -5,7 +5,6 @@ const { body, validationResult } = require('express-validator');
 const connectToDatabase = require('../models/db');
 const dotenv = require('dotenv');
 const pino = require('pino');
-const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const logger = pino();
 
