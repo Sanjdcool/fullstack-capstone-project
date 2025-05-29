@@ -98,7 +98,6 @@ router.post('/login', async (req, res) => {
     return res.status(500).json({ error: 'Internal server error', details: e.message });
   }
 });
-const { body, validationResult } = require('express-validator');
 
 router.put('/update', 
   // Example validation rules (adjust fields as needed)
